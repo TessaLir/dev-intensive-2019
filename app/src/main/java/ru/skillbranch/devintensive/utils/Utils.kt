@@ -14,10 +14,10 @@ object Utils {
     }
 
     fun transliteration(payload: String, divider: String = " ") :String {
-        val arr = payload.split(divider)
+        val arr = payload.split(" ")
         val fName = getEngChar(arr[0])
         val lNmae = getEngChar(arr[1])
-        return "${fName}$divider$lNmae"
+        return "$fName$divider$lNmae"
     }
 
     private fun getEngChar(s: String): Any {
@@ -31,10 +31,10 @@ object Utils {
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
-        val fName = if (firstName?.length == 0) null else firstName?.first()
-        val lName = if (lastName?.length == 0) null else lastName?.first()
+        val fName = if (firstName?.length == 0) null else firstName?.first()?.toUpperCase()
+        val lName = if (lastName?.length == 0) null else lastName?.first()?.toUpperCase()
         return "${if(fName == null) null
-                  else if(fName.equals(' ')) null
+                  else if(fName == ' ') null
                   else if(lName == null) "$fName" else "$fName$lName"}"
     }
 
@@ -72,39 +72,39 @@ object Utils {
         'э' -> "e"
         'ю' -> "yu"
         'я' -> "ya"
-        'а'.toUpperCase() -> "a".toUpperCase()
-        'б'.toUpperCase() -> "b".toUpperCase()
-        'в'.toUpperCase() -> "v".toUpperCase()
-        'г'.toUpperCase() -> "g".toUpperCase()
-        'д'.toUpperCase() -> "d".toUpperCase()
-        'е'.toUpperCase() -> "e".toUpperCase()
-        'ё'.toUpperCase() -> "e".toUpperCase()
-        'ж'.toUpperCase() -> "zh".toUpperCase()
-        'з'.toUpperCase() -> "z".toUpperCase()
-        'и'.toUpperCase() -> "i".toUpperCase()
-        'й'.toUpperCase() -> "i".toUpperCase()
-        'к'.toUpperCase() -> "k".toUpperCase()
-        'л'.toUpperCase() -> "l".toUpperCase()
-        'м'.toUpperCase() -> "m".toUpperCase()
-        'н'.toUpperCase() -> "n".toUpperCase()
-        'о'.toUpperCase() -> "o".toUpperCase()
-        'п'.toUpperCase() -> "p".toUpperCase()
-        'р'.toUpperCase() -> "r".toUpperCase()
-        'с'.toUpperCase() -> "s".toUpperCase()
-        'т'.toUpperCase() -> "t".toUpperCase()
-        'у'.toUpperCase() -> "u".toUpperCase()
-        'ф'.toUpperCase() -> "f".toUpperCase()
-        'х'.toUpperCase() -> "h".toUpperCase()
-        'ц'.toUpperCase() -> "c".toUpperCase()
-        'ч'.toUpperCase() -> "ch".toUpperCase()
-        'ш'.toUpperCase() -> "sh".toUpperCase()
-        'щ'.toUpperCase() -> "sh'".toUpperCase()
-        'ъ'.toUpperCase() -> "".toUpperCase()
-        'ы'.toUpperCase() -> "i".toUpperCase()
-        'ь'.toUpperCase() -> "".toUpperCase()
-        'э'.toUpperCase() -> "e".toUpperCase()
-        'ю'.toUpperCase() -> "yu".toUpperCase()
-        'я'.toUpperCase() -> "ya".toUpperCase()
-        else -> "_"
+        'а'.toUpperCase() -> "A"
+        'б'.toUpperCase() -> "B"
+        'в'.toUpperCase() -> "V"
+        'г'.toUpperCase() -> "G"
+        'д'.toUpperCase() -> "D"
+        'е'.toUpperCase() -> "E"
+        'ё'.toUpperCase() -> "E"
+        'ж'.toUpperCase() -> "Zh"
+        'з'.toUpperCase() -> "Z"
+        'и'.toUpperCase() -> "I"
+        'й'.toUpperCase() -> "I"
+        'к'.toUpperCase() -> "K"
+        'л'.toUpperCase() -> "L"
+        'м'.toUpperCase() -> "M"
+        'н'.toUpperCase() -> "N"
+        'о'.toUpperCase() -> "O"
+        'п'.toUpperCase() -> "P"
+        'р'.toUpperCase() -> "R"
+        'с'.toUpperCase() -> "S"
+        'т'.toUpperCase() -> "T"
+        'у'.toUpperCase() -> "U"
+        'ф'.toUpperCase() -> "F"
+        'х'.toUpperCase() -> "H"
+        'ц'.toUpperCase() -> "C"
+        'ч'.toUpperCase() -> "Ch"
+        'ш'.toUpperCase() -> "Sh"
+        'щ'.toUpperCase() -> "Sh'"
+        'ъ'.toUpperCase() -> ""
+        'ы'.toUpperCase() -> "I"
+        'ь'.toUpperCase() -> ""
+        'э'.toUpperCase() -> "E"
+        'ю'.toUpperCase() -> "Yu"
+        'я'.toUpperCase() -> "Ya"
+        else -> ch
     }
 }
