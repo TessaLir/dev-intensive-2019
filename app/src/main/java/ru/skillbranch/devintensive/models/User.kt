@@ -45,7 +45,7 @@ data class User (
 
     init {
         println("It's Alive\n" +
-                "${if(lastName==="Doe") "His name is" else "And his name is"}  $firstName $lastName\n")
+                "${if(lastName==="Doe") "His name is" else "And his name is"} $firstName $lastName\n")
     }
 
     private fun getIntro() = """
