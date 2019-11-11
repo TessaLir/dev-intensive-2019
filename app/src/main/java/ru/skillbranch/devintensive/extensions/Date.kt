@@ -2,6 +2,7 @@ package ru.skillbranch.devintensive.extensions
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 const val SECONDS = 1000L
 const val MINUTE = 60 * SECONDS
@@ -15,32 +16,25 @@ fun Date.format(pattern:String="HH:mm:ss dd.MM.yy"):String {
     return dateFormat.format(this)
 }
 
-fun Date.humanizeDiff(date: Date? = null): String {
-    var res: String
+fun Date.humanizeDiff(date: Date = Date()): String {
 
-    val tmpDate = if (date != null) ((Date().time - date.time)) else (Date().time - this.time)
+    val tmpDate = abs(this.time - date.time)
+    val isPast = this.time < date.time
 
-    res = when {
-        tmpDate >= 0 && tmpDate < 1 * SECONDS -> "только что"
-        tmpDate >= 1 * SECONDS  && tmpDate < 45 * SECONDS  -> "несколько секунд назад"
-        tmpDate >= 45 * SECONDS  && tmpDate < 75 * SECONDS  -> "минуту назад"
-        tmpDate >= 75 * SECONDS  && tmpDate < 45 * MINUTE -> "${tmpDate/MINUTE} минут назад"
-        tmpDate >= 45 * MINUTE && tmpDate < 75 * MINUTE -> "час назад"
-        tmpDate >= 75 * MINUTE && tmpDate < 22 * HOURS -> "${tmpDate/HOURS} часов назад"
-        tmpDate >= 22 * HOURS && tmpDate < 26 * HOURS -> "день назад"
-        tmpDate >= 26 * HOURS && tmpDate < 360 * DAY -> "${tmpDate/DAY} дней назад"
-        tmpDate >= -45 * SECONDS  && tmpDate < -1 * SECONDS  -> "через несколько секунд"
-        tmpDate >= -75 * SECONDS  && tmpDate < -45 * SECONDS  -> "через минуту"
-        tmpDate >= -45 * MINUTE  && tmpDate < -75 * SECONDS -> "через ${tmpDate/MINUTE} минут"
-        tmpDate >= -75 * MINUTE && tmpDate < -45 * MINUTE -> "через час"
-        tmpDate >= -22 * HOURS && tmpDate < -75 * MINUTE -> "через ${tmpDate/HOURS} часа"
-        tmpDate >= -26 * HOURS && tmpDate < -22 * HOURS -> "через день"
-        tmpDate >= -360 * DAY && tmpDate < -26 * HOURS -> "через ${tmpDate/DAY} дней"
-        tmpDate < -360 * DAY -> "более чем через год"
-        else -> "более года назад"
+    return when {
+        tmpDate <= SECONDS -> "только что"
+        tmpDate <= SECONDS * 45 -> if (isPast) "несколько секунд назад" else "через несколько секунд"
+        tmpDate <= SECONDS * 75 -> if (isPast) "минуту назад" else "через минуту"
+        tmpDate <= MINUTE * 45 -> if (isPast) "${TimeUnits.MINUTE.plural((tmpDate / MINUTE).toInt())} назад"
+        else "через ${TimeUnits.MINUTE.plural((tmpDate / MINUTE).toInt())}"
+        tmpDate  <= MINUTE * 75 -> if (isPast) "час назад" else "через час"
+        tmpDate  <= HOURS * 22 -> if (isPast) "${TimeUnits.HOUR.plural((tmpDate / HOURS).toInt())} назад"
+        else "через ${TimeUnits.HOUR.plural((tmpDate / HOURS).toInt())}"
+        tmpDate  <= HOURS * 26 -> if (isPast) "день назад" else "через день"
+        tmpDate  <= DAY * 360 -> if (isPast) "${TimeUnits.DAY.plural((tmpDate / DAY).toInt())} назад"
+        else "через ${TimeUnits.DAY.plural((tmpDate / DAY).toInt())}"
+        else -> if (isPast) "более года назад" else "более чем через год"
     }
-
-    return res
 }
 
 fun Date.add(value:Int, units: TimeUnits = TimeUnits.SECOND) : Date {
@@ -66,5 +60,25 @@ enum class TimeUnits {
     HOUR,
     DAY,
     MONTH,
-    YEAR
+    YEAR;
+
+    fun plural(value: Int): String {
+        val plurals = mapOf(
+            SECOND to Triple("секунду","секунды","секунд"),
+            MINUTE to Triple("минуту","минуты","минут"),
+            HOUR to Triple("час","часа","часов"),
+            DAY to Triple("день","дня","дней")
+        )
+
+        val rem = value % 10
+        val rem100 = value % 100
+
+        return when {
+            rem100 in 10..20 -> "$value ${plurals[this]?.third}"
+            rem in 2..4 -> "$value ${plurals[this]?.second}"
+            rem == 1 -> "$value ${plurals[this]?.first}"
+            else -> "$value ${plurals[this]?.third}"
+        }
+    }
+
 }
