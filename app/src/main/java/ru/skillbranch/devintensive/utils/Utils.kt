@@ -33,9 +33,8 @@ object Utils {
     fun toInitials(firstName: String?, lastName: String?): String? {
         val fName = if (firstName?.length == 0) null else firstName?.first()?.toUpperCase()
         val lName = if (lastName?.length == 0) null else lastName?.first()?.toUpperCase()
-        return "${if(fName == null) null
-                  else if(fName == ' ') null
-                  else if(lName == null) "$fName" else "$fName$lName"}"
+        if (fName == null || fName == ' ') return null
+        return "${if(lName == null) "$fName" else "$fName$lName"}"
     }
 
     private fun toChar(ch: Char) = when(ch) {
