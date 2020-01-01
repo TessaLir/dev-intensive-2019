@@ -4,12 +4,54 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:gravity="center"
         tools:context=".MainActivity">
 
     <TextView
-            android:layout_width="wrap_content"
+        android:id="@+id/main.tv.text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:textSize="@dimen/font_large_24"
+        android:text="Hello world!!!" />
+
+    <ImageView
+        android:id="@+id/main.iv.bender"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:src="@drawable/bender_dance" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:orientation="horizontal"
+        android:background="@color/color_primary">
+
+        <EditText
+            android:id="@+id/main.et.message"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Hello World!" />
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/spacing_normal_16"
+            android:layout_marginRight="@dimen/spacing_normal_16"
+            android:paddingTop="@dimen/spacing_normal_16"
+            android:paddingBottom="@dimen/spacing_normal_16"
+            android:lines="1"
+            android:textColor="@color/color_grey_light"
+            android:textColorHint="@color/color_grey_light"
+            android:hint="Введите текст"/>
+
+        <ImageView
+            android:id="@+id/main.iv.send"
+            android:layout_width="@dimen/image_large_24"
+            android:layout_height="@dimen/image_large_24"
+            android:layout_marginRight="@dimen/spacing_normal_16"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_send_white"/>
+
+    </LinearLayout>
 
 </LinearLayout>
