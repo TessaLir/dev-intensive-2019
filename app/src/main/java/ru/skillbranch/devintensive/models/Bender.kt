@@ -2,6 +2,8 @@ package ru.skillbranch.devintensive.models
 
 class Bender(var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
 
+    var errorCount: Int = 0
+
     fun askQuestion(): String  = when(question){
                 Question.NAME -> Question.NAME.question
                 Question.PROFESSION -> Question.PROFESSION.question
@@ -14,10 +16,24 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
         return if (question.answers.contains(answer)) {
             question = question.nextQuestion()
-            "Отлично - это правильный ответ\n${question.question}" to status.color
+            errorPlus(true)
+            "Отлично - ты справился\n${question.question}" to status.color
         } else {
             status = status.nextStatus()
-            "Это не правильный ответ\n${question.question}" to status.color
+            errorPlus(false)
+            "Это неправильный ответ\n${question.question}" to status.color
+        }
+    }
+
+    fun errorPlus(flag: Boolean) {
+        if (flag) errorCount = 0
+        else {
+            errorCount++
+            if (errorCount > 3) {
+                errorCount = 0
+                status = Status.NORMAL
+                question = Question.NAME
+            }
         }
     }
 
@@ -52,7 +68,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         SERIAL("Мой лличный номер?", listOf("2716057")){
             override fun nextQuestion(): Question = IDLE
         },
-        IDLE("Вопросов больше нет", listOf()){
+        IDLE("На этом все, вопросов больше нет", listOf()){
             override fun nextQuestion(): Question = IDLE
         };
 
